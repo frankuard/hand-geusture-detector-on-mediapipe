@@ -33,6 +33,8 @@ while True:
         break
     
     frame= cv2.flip(frame,1)
+    h,w = frame.shape[:2]
+    
     
     frame_rgb = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
     
@@ -46,9 +48,9 @@ while True:
     
     if result and result.hand_landmarks:
         
-        for hand_lms in result.hand_landmarks:
-    
-            h,w = frame.shape[:2]
+        for i,hand_lms in enumerate(result.hand_landmarks):
+            
+            
             
             Connections = [(0,1),(1,2),(2,3),(3,4),(0,5),(5,6),(6,7),(7,8),(0,9),(9,10),(10,11),(11,12),(0,13),(13,14),(14,15),(15,16),(0,17),(17,18),(18,19),(19,20)]
             
@@ -61,7 +63,10 @@ while True:
 
                 cv2.line(frame,(x1,y1),(x2,y2),(255,255,255),2)
             
+            
+            
             landmarkers = list(range(21))
+            
             
             for i in landmarkers:
                 lm = hand_lms[i]
@@ -80,7 +85,7 @@ while True:
             text = ''
             
         
-            if hand_lms[4].x < hand_lms[3].x:
+            if hand_lms[4].x > hand_lms[3].x:
                 fingers.append(1)
             
             else:
@@ -96,15 +101,16 @@ while True:
                     
                     
             if fingers == [1,1,1,1,1]:
-                text = "HELLO 👋"
+                text = "HELLO"
                 
             elif fingers == [0,1,1,0,0]:
-                text = "PEACE ✌️"
+                text = "PEACE"
                 
             elif fingers == [0,0,0,0,0]:
-                text = "BRO FIST 👊"
+                text = "BRO FIST"
+            
               
-            cv2.putText(frame,text, (50,80), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2)               
+        cv2.putText(frame,text, (50,80), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2)               
     cv2.imshow("Hand Tracking", frame)
         
     if cv2.waitKey(1) & 0xFF == ord('q'):
