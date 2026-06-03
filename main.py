@@ -52,7 +52,9 @@ while True:
             
             
             
-            Connections = [(0,1),(1,2),(2,3),(3,4),(0,5),(5,6),(6,7),(7,8),(0,9),(9,10),(10,11),(11,12),(0,13),(13,14),(14,15),(15,16),(0,17),(17,18),(18,19),(19,20)]
+            Connections = [(0,1),(1,2),(2,3),(3,4),(0,5),(5,6),(6,7),(7,8),(0,9),(9,10),(10,11),(11,12),(0,13),(13,14),(14,15),(15,16),(0,17),(17,18),(18,19),(19,20),(5,9),(9,13),(13,17)]
+            
+            
             
             for a,b in Connections:
                 x1 = int(hand_lms[a].x*w)
@@ -65,17 +67,14 @@ while True:
             
             
             
-            landmarkers = list(range(21))
-            
-            
-            for i in landmarkers:
-                lm = hand_lms[i]
+            for j in range(21):
+                lm = hand_lms[j]
                 x = int(lm.x*w)
                 y = int(lm.y*h)    
                 
                 cv2.circle(frame,(x,y),3,(0,200,0),-1)
                 
-                cv2.putText(frame,str(i),(x+5,y-5),cv2.FONT_HERSHEY_SIMPLEX,0.3,(255,255,255),1)
+                cv2.putText(frame,str(j),(x+5,y-5),cv2.FONT_HERSHEY_SIMPLEX,0.3,(255,255,255),1)
              
             tips = [4,8,12,16,20]
             pips = [3,6,10,14,18]
@@ -109,8 +108,23 @@ while True:
             elif fingers == [0,0,0,0,0]:
                 text = "BRO FIST"
             
+            elif fingers == [0,1,1,1,0]:
+                text = "THREE"
+                
+            elif fingers == [0,1,0,0,1]:
+                text = "ROCK"
+            
+            elif fingers == [0,1,0,0,0]:
+                text = "TRUST THE LORD MY G"
+                
+            elif fingers == [1,0,0,0,0]:
+                if not hand_lms[4].y < hand_lms[2].y:
+                    text = "DISLIKE"
+                
               
-        cv2.putText(frame,text, (50,80), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2)               
+        cv2.putText(frame,text, (50,80), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2)  
+        
+                     
     cv2.imshow("Hand Tracking", frame)
         
     if cv2.waitKey(1) & 0xFF == ord('q'):
