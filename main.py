@@ -18,3 +18,24 @@ options = HandLandmarkerOptions(base_options=base_options,running_mode=VisionRun
 landmarker = HandLandmarker.create_from_options(options)
 print("HandLandMarker created successfully")
 
+
+
+cap = cv2.VideoCapture(0)
+
+while True:
+    
+    ret, frame = cap.read()
+    
+    if not ret:
+        break
+    
+    frame= cv2.flip(frame,1)
+    
+    cv2.imshow("Hand Tracking", frame)
+    
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+landmarker.close()
