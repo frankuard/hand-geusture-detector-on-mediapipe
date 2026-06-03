@@ -23,7 +23,8 @@ print("HandLandMarker created successfully")
 
 
 cap = cv2.VideoCapture(0)
-
+cap.set(3,640)
+cap.set(4,480)
 while True:
     
     ret, frame = cap.read()
@@ -76,6 +77,9 @@ while True:
             
             fingers = []
             
+            text = ''
+            
+        
             if hand_lms[4].x < hand_lms[3].x:
                 fingers.append(1)
             
@@ -90,11 +94,21 @@ while True:
                 else:
                     fingers.append(0)
                     
-                             
-        cv2.imshow("Hand Tracking", frame)
+                    
+            if fingers == [1,1,1,1,1]:
+                text = "HELLO 👋"
+                
+            elif fingers == [0,1,1,0,0]:
+                text = "PEACE ✌️"
+                
+            elif fingers == [0,0,0,0,0]:
+                text = "BRO FIST 👊"
+              
+            cv2.putText(frame,text, (50,80), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2)               
+    cv2.imshow("Hand Tracking", frame)
         
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 cap.release()
 cv2.destroyAllWindows()
